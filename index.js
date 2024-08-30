@@ -7,38 +7,47 @@ welcomeMessage();
 const displayWorkoutRoutine = () => {
     const workoutInput = document.querySelector('#workoutInput').value;
     const workoutList = document.querySelector('#workoutList');
-    const newWorkout = document.createElement('li');
-    newWorkout.textContent = workoutInput;
-    workoutList.appendChild(newWorkout);
+    duplicated(workoutInput,workoutList);
 };
 
 document.querySelector('#submitWorkout').addEventListener('click', displayWorkoutRoutine);
 
-// ⚠️⚠️⚠️ Lesson 3: Creating and Removing Elements ⚠️⚠️⚠️
-// Function to add new fitness goals and remove completed ones
-// NOW LET'S DEBUG TO PREVENT DUPLICATE GOALS FROM BEING SUBMITTED 🚀
+
+// duplicates function
+const duplicated = (input,itemList)=>{
+    
+    const listOfItems = Array.from(itemList.children); // create array from existing goals listed
+    let isDuplicate = false;
+
+    //check for duplicates
+    for(let item of listOfItems){
+
+        if (item.textContent.toLowerCase() === input.toLowerCase()) { 
+            isDuplicate = true;
+            break;
+        }
+    }
+  
+    //Prevent duplicates
+    if (isDuplicate){
+        //display this meessage if item is duplicated
+        alert("Item already exists!");  
+
+    } else{
+        const newItem = document.createElement('li');
+        newItem.textContent = input;
+        itemList.appendChild(newItem);
+    }
+     // Event listener to remove items when clicked
+}
+
+
 
 const addNewGoal = () => {
     const goalInput = document.querySelector('#goalInput').value;
     const goalList = document.querySelector('#goalList');
+    duplicated(goalInput,goalList); //calls function that checks and prevents duplicates
     
-    // ⚠️ Hint 1: Check for duplicates
-    // Use 'goalList' to get all existing goals and check if 'goalInput' matches any of them.
-    
-    // ⚠️ Hint 2: Prevent duplicates
-    // If a duplicate is found, display an alert to the user and don't add the goal to the list.
-    // If it's not a duplicate, proceed with adding it as a new goal.
-    
-    // ⚠️ Hint 3: Code structure
-    // You might want to wrap the duplicate-checking logic in an 'if' statement.
-    
-    // ⚠️ Hint 4: Event listener
-    // The event listener that removes goals when clicked is not related to this issue.
-    // Focus on preventing duplicates for now.
-    
-    const newGoal = document.createElement('li');
-    newGoal.textContent = goalInput;
-    goalList.appendChild(newGoal);
 };
 
 // Add event listener to the goal submit button
@@ -73,3 +82,12 @@ const submitMealPlan = (event) => {
 };
 
 document.querySelector('#mealPlanForm').addEventListener('submit', submitMealPlan);
+
+//----------------- Learnt new concepts-----------------
+// array.from() which creates an array from what you specify
+// arrow functions
+// code refactoring
+
+//--------Struggles---------
+// I used for loop to loop through the list of items 
+//but that didnt work until I Learnt about array.from and ul.children
